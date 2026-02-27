@@ -1,0 +1,7 @@
+{
+  "enabledPlugins": {
+    "ralph-skills@ralph-marketplace": true
+  },
+    "amp.experimental.autoHandoff": { "context": 90 }
+
+}
