@@ -1,0 +1,46 @@
+services:
+  ralph-runner:
+    build:
+      context: .
+      dockerfile: .devcontainer/Dockerfile
+    container_name: ralph-claude-runner
+    volumes:
+      # Projeto montado com leitura/escrita
+      - .:/workspace
+      # Persistir config do Claude entre runs
+      - claude-config:/home/ralph/.claude
+      # Persistir npm global cache
+      - npm-cache:/home/ralph/.npm
+    environment:
+      # ============================================
+      # AUTENTICAÇÃO (escolha UMA das opções)
+      # ============================================
+      
+      # Opção 1: API Key (descomente e preencha)
+      # ANTHROPIC_API_KEY: sk-ant-xxxxxxxxxxxxxxxx
+      
+      # Opção 2: Login interativo - entre no container
+      # e rode: claude login
+      
+      # ============================================
+      # Configurações do Claude Code
+      # ============================================
+      NODE_OPTIONS: "--max-old-space-size=4096"
+      CLAUDE_CONFIG_DIR: "/home/ralph/.claude"
+    
+    stdin_open: true
+    tty: true
+    working_dir: /workspace
+
+    # Limites de recursos (ajuste conforme sua máquina)
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+          cpus: "2.0"
+
+volumes:
+  claude-config:
+    name: ralph-claude-config
+  npm-cache:
+    name: ralph-npm-cache
